@@ -16,10 +16,13 @@ module Qor
         self
       end
 
+      def __children
+        @__children ||= {}
+      end
+
       def __add_child(type, options, child)
         child.__parent  = self
         child.__options = options
-        self.__children ||= {}
         self.__children[type.to_sym] = child
 
         method_defination = <<-DOC
@@ -29,7 +32,7 @@ module Qor
             node.add_config(config)
             node.options = opts
             node.block = blk
-            node.config.instance_eval(&blk) if block_given?
+            node.config.instance_eval(&blk) if block_given? && (config.__children.size > 0)
             __node.add_child(node)
           end
         DOC

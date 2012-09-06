@@ -13,6 +13,7 @@ gadget :quick_buy, :floating => true do
   end
 
   context do
+    {:kind => 'light'}.merge(meta_settings.symbolize_keys).merge(:express_link => "/products/#{meta_settings[:product_code]}/#{meta_settings[:color_code]}?express=true")
   end
 
   template do
