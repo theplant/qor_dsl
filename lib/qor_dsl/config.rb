@@ -25,7 +25,7 @@ module Qor
         method_defination = <<-DOC
           def #{type}(name=nil, opts={}, &blk)
             config = __children['#{type}'.to_sym]
-            node = Qor::Dsl::Node.new
+            node = Qor::Dsl::Node.new(name)
             node.config = config
             __node.add_child(node)
           end
