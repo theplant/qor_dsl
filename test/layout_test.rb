@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'configure')
 
 describe Layout do
   before do
-    Layout::Configuration.load('test/dsl/layout.rb')
+    Layout::Configuration.load('test/layout.rb')
     @root = Layout::Configuration.root
   end
 
