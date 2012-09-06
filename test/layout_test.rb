@@ -13,7 +13,7 @@ describe Layout do
     # test normal find
     Layout::Configuration.find(:gadget, 'quick_buy').name.must_equal :quick_buy
     # test Inherit
-    Layout::Configuration.find(:gadget, :product_link).find(:template).value.must_equal "Hello World"
+    Layout::Configuration.find(:gadget, :product_link).find(:template)[0].value.must_equal "Hello World"
 
     # More is coming... (test multi, alias_node)
   end

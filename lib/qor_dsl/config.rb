@@ -26,7 +26,10 @@ module Qor
           def #{type}(name=nil, opts={}, &blk)
             config = __children['#{type}'.to_sym]
             node = Qor::Dsl::Node.new(name)
-            node.config = config
+            node.add_config(config)
+            node.options = opts
+            node.block = blk
+            node.config.instance_eval(&blk) if block_given?
             __node.add_child(node)
           end
         DOC

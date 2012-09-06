@@ -5,8 +5,8 @@ module Qor
         @node_root ||= Qor::Dsl::Node.new
       end
 
-      def node(*arguments)
-        node_root.node(*arguments)
+      def node(type, options={}, &blk)
+        node_root.node(type, options, &blk)
       end
 
       def root
