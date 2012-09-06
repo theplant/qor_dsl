@@ -22,7 +22,7 @@ module Qor
       end
 
       def config_options_for_child(type)
-        config.__children[type].__options
+        config.__children[type].__options || {}
       end
 
       def add_child(child)
@@ -37,7 +37,7 @@ module Qor
         end
 
         return selected_children[0] if !name.nil? && selected_children.length == 1
-        return parent.find(type, name) if selected_children.length == 0
+        return parent.find(type, name) if (selected_children.length == 0) && config_options_for_child(type)[:inherit]
         selected_children
       end
 
