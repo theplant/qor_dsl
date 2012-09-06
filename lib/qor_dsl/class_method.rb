@@ -22,7 +22,7 @@ module Qor
       def load_file(file)
         return unless File.exist?(file.to_s)
         content = File.read(file)
-        node_root.instance_eval(content)
+        node_root.config.instance_eval(content)
         node_root
       end
 
