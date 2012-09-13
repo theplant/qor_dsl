@@ -13,8 +13,20 @@ module Qor
         @root || load
       end
 
+      def default_configs(files)
+        @default_configs = files
+      end
+
+      def default_config
+        if @default_configs.is_a?(Array)
+          @default_configs.select {|x| File.exist?(x) }[0]
+        else
+          @default_configs
+        end
+      end
+
       def load(path=nil, opts={})
-        @load_path = path || @load_path
+        @load_path = path || @load_path || default_config
         @root = (opts[:force] ? nil : @root) || load_file(@load_path)
         @root
       end
