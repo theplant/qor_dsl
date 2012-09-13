@@ -8,6 +8,10 @@ module Qor
         self.add_config(options[:config] || Qor::Dsl::Config.new('ROOT', self))
       end
 
+      def inspect_name
+        "{#{config.__name}: #{name || 'nil'}}"
+      end
+
       def add_config(config)
         self.config = config
         config.__node = self
@@ -19,6 +23,8 @@ module Qor
 
       def children
         @children ||= []
+        @children = @children.flatten.compact
+        @children
       end
 
       def config_options_for_child(type)
@@ -48,6 +54,22 @@ module Qor
 
       def value
         options[:value] || (block.nil? ? name : block.call)
+      end
+
+      def inspect
+        result = [
+          ['name',     inspect_name],
+          ['parent',   parent && parent.inspect_name],
+          ['config',   config.__name],
+          ['children', children.map(&:inspect_name)],
+          ['options',  options],
+          ['block',    block]
+        ].inject({}) do |s, value|
+          s[value[0]] = value[1] if value[1] && value[1].to_s.length > 0
+          s
+        end.inspect
+
+        "<Qor::Dsl::Node> #{result}"
       end
     end
   end
