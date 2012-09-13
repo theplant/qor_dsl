@@ -49,7 +49,7 @@ module Qor
 
       def first(type=nil, name=nil)
         selected_children = find(type, name)
-        selected_children.is_a? Array ? selected_children[0] : selected_children
+        selected_children.is_a?(Array) ? selected_children[0] : selected_children
       end
 
       def value
@@ -58,7 +58,7 @@ module Qor
 
       def inspect
         result = [
-          ['name',     inspect_name],
+          ['name',     name],
           ['parent',   parent && parent.inspect_name],
           ['config',   config.__name],
           ['children', children.map(&:inspect_name)],
