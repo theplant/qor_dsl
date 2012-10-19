@@ -47,10 +47,11 @@ module Qor
         children << child
       end
 
-      def find(type=nil, name=nil)
+      def find(type=nil, name=nil, &block)
         selected_children = children.select do |child|
           (type.nil? ? true : (child.config.__name.to_s == type.to_s)) &&
-            (name.nil? ? true : (child.name.to_s == name.to_s))
+            (name.nil? ? true : (child.name.to_s == name.to_s)) &&
+            (block.nil? ? true : block.call(child))
         end
 
         return selected_children[0] if !name.nil? && selected_children.length == 1
@@ -58,8 +59,8 @@ module Qor
         selected_children
       end
 
-      def first(type=nil, name=nil)
-        selected_children = find(type, name)
+      def first(type=nil, name=nil, &block)
+        selected_children = find(type, name, &block)
         selected_children.is_a?(Array) ? selected_children[0] : selected_children
       end
 

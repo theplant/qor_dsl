@@ -40,12 +40,12 @@ module Qor
         node_root
       end
 
-      def find(*arguments)
-        root.find(*arguments)
+      def find(*arguments, &block)
+        root.find(*arguments, &block)
       end
 
-      def first(*arguments)
-        root.first(*arguments)
+      def first(*arguments, &block)
+        root.first(*arguments, &block)
       end
     end
   end

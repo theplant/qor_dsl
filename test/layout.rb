@@ -1,8 +1,8 @@
-template "daytime", "v1", :since => "9am", :to => "12am" do
+template "daytime", "v1", :since => "09:00", :to => "12:00" do
   "Hello World"
 end
 
-template "daytime", "v2", :since => "1pm", :to => "6am" do
+template "daytime", "v2", :since => "13:00", :to => "18:00" do
   "Hello World2"
 end
 

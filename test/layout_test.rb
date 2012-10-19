@@ -8,20 +8,25 @@ describe Layout do
   end
 
   it "layout config testing" do
-    # Simple query
+    # Find by type
     Layout::Configuration.find(:gadget).length.must_equal 2
 
     # Find by name
     Layout::Configuration.find(:gadget, 'quick_buy').name.must_equal :quick_buy
 
+    # Find by block
+    Layout::Configuration.first(:template) do |n|
+      n.options[:since] > "12:50"
+    end.data[0].must_equal 'v2'
+
     # Inherit
     Layout::Configuration.find(:gadget, :product_link).find(:template)[0].value.must_equal "Hello World"
 
     # Store any data
-    Layout::Configuration.first(:template).data.must_equal ["v1", {:since=>"9am", :to=>"12am"}]
+    Layout::Configuration.first(:template).data.must_equal ["v1", {:since => "09:00", :to => "12:00"}]
 
     # Options
-    Layout::Configuration.find(:template)[1].options.must_equal({:since => "1pm", :to => "6am"})
+    Layout::Configuration.find(:template)[1].options.must_equal({:since => "13:00", :to => "18:00"})
 
     # More is coming... (multi, alias_node)
   end
