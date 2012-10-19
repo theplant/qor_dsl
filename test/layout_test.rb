@@ -17,7 +17,7 @@ describe Layout do
     # Find by block
     Layout::Configuration.first(:template) do |n|
       n.options[:since] > "12:50"
-    end.data[0].must_equal 'v2'
+    end.value.must_equal 'Hello World2'
 
     # Inherit
     Layout::Configuration.find(:gadget, :product_link).find(:template)[0].value.must_equal "Hello World"

@@ -1,0 +1,14 @@
+PATH
+  remote: .
+  specs:
+    qor_dsl (0.0.5)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  qor_dsl!

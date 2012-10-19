@@ -20,7 +20,7 @@ module Qor
       end
 
       def value
-        options[:value] || (block.nil? ? name : block.call)
+        block.nil? ? (options[:value] || name) : block.call
       end
 
       def add_config(config)
@@ -70,7 +70,7 @@ module Qor
           ['parent',   parent && parent.inspect_name],
           ['config',   config.__name],
           ['children', children.map(&:inspect_name)],
-          ['options',  options],
+          ['data',     data],
           ['block',    block]
         ].inject({}) do |s, value|
           s[value[0]] = value[1] if value[1] && value[1].to_s.length > 0
