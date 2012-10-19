@@ -1,5 +1,9 @@
-template do
+template "daytime", "v1", :since => "9am", :to => "12am" do
   "Hello World"
+end
+
+template "daytime", "v2", :since => "1pm", :to => "6am" do
+  "Hello World2"
 end
 
 gadget :product_link, :floating => true

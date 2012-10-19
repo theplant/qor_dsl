@@ -26,11 +26,11 @@ module Qor
         self.__children[type.to_sym] = child
 
         method_defination = <<-DOC
-          def #{type}(name=nil, opts={}, &blk)
+          def #{type}(name=nil, *data, &blk)
             config = __children['#{type}'.to_sym]
             node = Qor::Dsl::Node.new(name)
             node.add_config(config)
-            node.options = opts
+            node.data = *data
             node.block = blk
             node.config.instance_eval(&blk) if block_given? && (config.__children.size > 0)
             __node.add_child(node)

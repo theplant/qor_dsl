@@ -1,7 +1,7 @@
 module Qor
   module Dsl
     class Node
-      attr_accessor :name, :config, :parent, :children, :options, :block
+      attr_accessor :name, :config, :parent, :children, :data, :options, :block
 
       def initialize(name=nil, options={})
         self.name   = name
@@ -10,6 +10,17 @@ module Qor
 
       def inspect_name
         "{#{config.__name}: #{name || 'nil'}}"
+      end
+
+      def options
+        return @options if @options.is_a?(Hash)
+        return data[-1] if data.is_a?(Array) && data[-1].is_a?(Hash)
+        return data if data.is_a?(Hash)
+        {}
+      end
+
+      def value
+        options[:value] || (block.nil? ? name : block.call)
       end
 
       def add_config(config)
@@ -50,10 +61,6 @@ module Qor
       def first(type=nil, name=nil)
         selected_children = find(type, name)
         selected_children.is_a?(Array) ? selected_children[0] : selected_children
-      end
-
-      def value
-        options[:value] || (block.nil? ? name : block.call)
       end
 
       def inspect
