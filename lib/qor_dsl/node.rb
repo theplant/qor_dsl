@@ -69,7 +69,7 @@ module Qor
           s
         end.inspect
 
-        "<Qor::Dsl::Node> #{result}"
+        "#<Qor::Dsl::Node:0x#{object_id.to_s(16)} #{result}>"
       end
     end
   end

@@ -26,8 +26,10 @@ module Qor
       end
 
       def load(path=nil, opts={})
+        @load_path, @root = nil, nil if opts[:force]
+
         @load_path = path || @load_path || default_config
-        @root = (opts[:force] ? nil : @root) || load_file(@load_path)
+        @root ||= load_file(@load_path)
         @root
       end
 
