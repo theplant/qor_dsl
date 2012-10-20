@@ -19,7 +19,7 @@ module Qor
 
       def default_config
         if @default_configs.is_a?(Array)
-          @default_configs.select {|x| File.exist?(x) }[0]
+          @default_configs.select {|x| File.exist?(x.to_s) }[0]
         else
           @default_configs
         end

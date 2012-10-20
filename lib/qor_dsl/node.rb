@@ -16,6 +16,10 @@ module Qor
         "{#{config_name}: #{name || 'nil'}}"
       end
 
+      def root?
+        root == self
+      end
+
       def root
         parent ? parent.root : self
       end
@@ -63,7 +67,7 @@ module Qor
 
       def deep_find(type=nil, name=nil, &block)
         nodes = root.all_nodes
-        nodes = nodes.select {|n| n.parents.include?(self) } if root != self
+        nodes = nodes.select {|n| n.parents.include?(self) } unless root?
         find(type, name, nodes, &block)
       end
 

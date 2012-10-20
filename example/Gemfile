@@ -1,0 +1,13 @@
+source 'http://rubygems.org'
+
+gem 'rails', '3.2.8'
+gem 'unicorn'
+gem 'devise', :git => "git://github.com/jinzhu/devise.git", :ref => "b94ee9da98b16e4c8fbdc91af8605669d01b17e6"
+
+group :development do
+  gem 'pry-rails'
+end
+
+group :test do
+  gem 'rspec'
+end
