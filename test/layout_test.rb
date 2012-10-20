@@ -12,6 +12,8 @@ describe Layout do
     Layout::Configuration.find(:gadget).length.must_equal 2
     Layout::Configuration.find(:template).length.must_equal 2
     Layout::Configuration.deep_find(:template).length.must_equal 3
+    # :settings, :meta, :meta, :meta, :meta, :context, :template
+    Layout::Configuration.find(:gadget, :quick_buy).deep_find().length.must_equal 7
 
     # Find by name
     Layout::Configuration.find(:gadget, 'quick_buy').name.must_equal :quick_buy

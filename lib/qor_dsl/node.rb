@@ -58,7 +58,9 @@ module Qor
       end
 
       def deep_find(type=nil, name=nil, &block)
-        find(type, name, root.all_nodes, &block)
+        nodes = root.all_nodes
+        nodes = nodes.select {|n| n.parents.include?(self) } if root != self
+        find(type, name, nodes, &block)
       end
 
       def find(type=nil, name=nil, nodes=children, &block)
