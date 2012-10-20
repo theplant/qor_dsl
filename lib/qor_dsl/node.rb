@@ -8,8 +8,12 @@ module Qor
         self.add_config(options[:config] || Qor::Dsl::Config.new('ROOT', self))
       end
 
+      def config_name
+        config.__name
+      end
+
       def inspect_name
-        "{#{config.__name}: #{name || 'nil'}}"
+        "{#{config_name}: #{name || 'nil'}}"
       end
 
       def root
@@ -65,7 +69,7 @@ module Qor
 
       def find(type=nil, name=nil, nodes=children, &block)
         selected_children = nodes.select do |child|
-          (type.nil? ? true : (child.config.__name.to_s == type.to_s)) &&
+          (type.nil? ? true : (child.config_name.to_s == type.to_s)) &&
             (name.nil? ? true : (child.name.to_s == name.to_s)) &&
             (block.nil? ? true : block.call(child))
         end
@@ -80,11 +84,11 @@ module Qor
         selected_children.is_a?(Array) ? selected_children[0] : selected_children
       end
 
-      def inspect
+      def to_s
         result = [
           ['name',     name],
           ['parent',   parent && parent.inspect_name],
-          ['config',   config.__name],
+          ['config',   config_name],
           ['children', children.map(&:inspect_name)],
           ['data',     data],
           ['block',    block]

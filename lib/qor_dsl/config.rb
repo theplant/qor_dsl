@@ -39,6 +39,21 @@ module Qor
 
         self.instance_eval method_defination
       end
+
+      def to_s
+        result = [
+          ['name',    __name],
+          ['parent',  __parent && __parent.__name],
+          ['__children', __children.keys],
+          ['options', __options],
+          ['block',   __block]
+        ].inject({}) do |s, value|
+          s[value[0]] = value[1] if value[1] && value[1].to_s.length > 0
+          s
+        end.inspect
+
+        "#<Qor::Dsl::Config::0x#{object_id.to_s(16)} #{result}>"
+      end
     end
   end
 end
