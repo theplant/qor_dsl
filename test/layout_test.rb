@@ -10,6 +10,8 @@ describe Layout do
   it "layout config testing" do
     # Find by type
     Layout::Configuration.find(:gadget).length.must_equal 2
+    Layout::Configuration.find(:template).length.must_equal 2
+    Layout::Configuration.deep_find(:template).length.must_equal 3
 
     # Find by name
     Layout::Configuration.find(:gadget, 'quick_buy').name.must_equal :quick_buy

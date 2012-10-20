@@ -44,6 +44,10 @@ module Qor
         root.find(*arguments, &block)
       end
 
+      def deep_find(*arguments, &block)
+        root.deep_find(*arguments, &block)
+      end
+
       def first(*arguments, &block)
         root.first(*arguments, &block)
       end

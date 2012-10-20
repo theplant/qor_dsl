@@ -1,7 +1,7 @@
 module Qor
   module Dsl
     class Node
-      attr_accessor :name, :config, :parent, :children, :data, :options, :block
+      attr_accessor :name, :config, :parent, :children, :data, :options, :block, :all_nodes
 
       def initialize(name=nil, options={})
         self.name   = name
@@ -10,6 +10,10 @@ module Qor
 
       def inspect_name
         "{#{config.__name}: #{name || 'nil'}}"
+      end
+
+      def root
+        parent ? parent.root : self
       end
 
       def options
@@ -39,16 +43,22 @@ module Qor
       end
 
       def config_options_for_child(type)
-        config.__children[type].__options || {}
+        config.__children[type].__options || {} rescue {}
       end
 
       def add_child(child)
         child.parent = self
         children << child
+        root.all_nodes ||= []
+        root.all_nodes << child
       end
 
-      def find(type=nil, name=nil, &block)
-        selected_children = children.select do |child|
+      def deep_find(type=nil, name=nil, &block)
+        find(type, name, root.all_nodes, &block)
+      end
+
+      def find(type=nil, name=nil, nodes=children, &block)
+        selected_children = nodes.select do |child|
           (type.nil? ? true : (child.config.__name.to_s == type.to_s)) &&
             (name.nil? ? true : (child.name.to_s == name.to_s)) &&
             (block.nil? ? true : block.call(child))

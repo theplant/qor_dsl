@@ -32,8 +32,8 @@ module Qor
             node.add_config(config)
             node.data = *data
             node.block = blk
-            node.config.instance_eval(&blk) if block_given? && (config.__children.size > 0)
             __node.add_child(node)
+            node.config.instance_eval(&blk) if block_given? && (config.__children.size > 0)
           end
         DOC
 
