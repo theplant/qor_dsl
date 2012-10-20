@@ -16,6 +16,10 @@ module Qor
         parent ? parent.root : self
       end
 
+      def parents
+        parent ? [parent, parent.parents].flatten : []
+      end
+
       def options
         return @options if @options.is_a?(Hash)
         return data[-1] if data.is_a?(Array) && data[-1].is_a?(Hash)

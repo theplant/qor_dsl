@@ -34,6 +34,13 @@ action :google do
   end
 end
 
+action :yahoo do
+  desc "From Yahoo"
+  detect do |app|
+    '...'
+  end
+end
+
 layout :home do
   gadgets []
 end
