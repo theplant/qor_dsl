@@ -40,6 +40,9 @@ describe Layout do
     # Parents
     Layout::Configuration.find(:gadget, :quick_buy).first(:template).parents.count.must_equal 2
 
+    # Value for node
+    Layout::Configuration.find(:gadget, :quick_buy).value.must_equal :quick_buy
+
     # More is coming... (multi, alias_node)
   end
 end

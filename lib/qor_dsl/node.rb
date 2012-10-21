@@ -36,7 +36,7 @@ module Qor
       end
 
       def value
-        block.nil? ? (options[:value] || name) : block.call
+        (config.__children.size > 0 || block.nil?) ? (options[:value] || name) : block.call
       end
 
       def add_config(config)
