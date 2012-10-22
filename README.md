@@ -1,7 +1,9 @@
 Qor Dsl - DSL made easy!
 =======
 
+[![Build Status](https://secure.travis-ci.org/qor/qor_dsl.png?branch=master)][travis]
 [![Code Climate](https://codeclimate.com/badge.png)][codeclimate]
+[travis]: http://travis-ci.org/qor/qor_dsl
 [codeclimate]: https://codeclimate.com/github/qor/qor_dsl
 
 ## Description
