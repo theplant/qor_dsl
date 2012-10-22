@@ -44,7 +44,7 @@ module Qor
         result = [
           ['name',    __name],
           ['parent',  __parent && __parent.__name],
-          ['__children', __children.keys],
+          ['children', __children.keys],
           ['options', __options],
           ['block',   __block]
         ].inject({}) do |s, value|

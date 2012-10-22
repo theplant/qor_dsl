@@ -5,6 +5,13 @@ module Qor
         @node_root ||= Qor::Dsl::Node.new
       end
 
+      def reset!
+        node_config = node_root.config
+        @node_root = Qor::Dsl::Node.new
+        @node_root.add_config(node_config)
+        @root = nil
+      end
+
       def node(type, options={}, &blk)
         node_root.node(type, options, &blk)
       end
@@ -26,11 +33,10 @@ module Qor
       end
 
       def load(path=nil, opts={})
-        @load_path, @root = nil, nil if opts[:force]
+        reset! if opts[:force]
 
         @load_path = path || @load_path || default_config
         @root ||= load_file(@load_path)
-        @root
       end
 
       def load_file(file)

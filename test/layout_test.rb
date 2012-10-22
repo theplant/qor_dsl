@@ -4,7 +4,6 @@ require File.join(File.dirname(__FILE__), 'configure')
 describe Layout do
   before do
     Layout::Configuration.load('test/layout.rb')
-    @root = Layout::Configuration.root
   end
 
   it "layout config testing" do
@@ -44,5 +43,21 @@ describe Layout do
     Layout::Configuration.find(:gadget, :quick_buy).value.must_equal :quick_buy
 
     # More is coming... (multi, alias_node)
+  end
+
+  it "force load" do
+    root = Layout::Configuration.root
+    root.find(:gadget).length.must_equal 2
+    old_object_ids = root.find(:gadget).map(&:object_id).sort
+
+    Layout::Configuration.load('test/layout.rb')
+    root.find(:gadget).map(&:object_id).sort.must_equal old_object_ids
+
+    Layout::Configuration.load('test/layout.rb', :force => true)
+    new_root = Layout::Configuration.root
+
+    new_root.find(:gadget).length.must_equal 2
+    root.find(:gadget).map(&:object_id).sort.must_equal old_object_ids
+    new_root.find(:gadget).map(&:object_id).sort.wont_be_same_as old_object_ids
   end
 end
