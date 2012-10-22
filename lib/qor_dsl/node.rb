@@ -89,19 +89,15 @@ module Qor
       end
 
       def to_s
-        result = [
-          ['name',     name],
-          ['parent',   parent && parent.inspect_name],
-          ['config',   config_name],
-          ['children', children.map(&:inspect_name)],
-          ['data',     data],
-          ['block',    block]
-        ].inject({}) do |s, value|
-          s[value[0]] = value[1] if value[1] && value[1].to_s.length > 0
-          s
-        end.inspect
-
-        "#<Qor::Dsl::Node:0x#{object_id.to_s(16)} #{result}>"
+        obj_options = {
+          'name' => name,
+          'parent' => parent && parent.inspect_name,
+          'config' => config_name,
+          'children' => children.map(&:inspect_name),
+          'data' => data,
+          'block' => block
+        }
+        Qor::Dsl.inspect_object(self, obj_options)
       end
     end
   end

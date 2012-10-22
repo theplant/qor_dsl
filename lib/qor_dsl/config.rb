@@ -41,18 +41,14 @@ module Qor
       end
 
       def to_s
-        result = [
-          ['name',    __name],
-          ['parent',  __parent && __parent.__name],
-          ['children', __children.keys],
-          ['options', __options],
-          ['block',   __block]
-        ].inject({}) do |s, value|
-          s[value[0]] = value[1] if value[1] && value[1].to_s.length > 0
-          s
-        end.inspect
-
-        "#<Qor::Dsl::Config::0x#{object_id.to_s(16)} #{result}>"
+        obj_options = {
+          'name' => __name,
+          'parent' => __parent && __parent.__name,
+          'children' => __children.keys,
+          'options' => __options,
+          'block' => __block
+        }
+        Qor::Dsl.inspect_object(self, obj_options)
       end
     end
   end
