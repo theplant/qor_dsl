@@ -35,7 +35,7 @@ Qor Dsl - DSL made easy!
 
 3, Defining config (Sample Gemfile file used for above config)
 
-    # Gemfile
+    # Using default config file `Gemfile`
     source 'http://rubygems.org'
 
     gem 'rails', '3.2.8'
@@ -50,7 +50,15 @@ Qor Dsl - DSL made easy!
       gem 'rspec'
     end
 
-4, Querying config (Please checkout the source code and play with examples under the /example directory for more details)
+    # Or using code block
+    Gemfile.load do
+      source 'http://rubygems.org'
+
+      gem 'rails', '3.2.8'
+      gem 'unicorn'
+    end
+
+4, Querying config (Please checkout the source code and play with examples under the `example` directory for more details)
 
     # Find by type
     Gemfile.find(:gem)

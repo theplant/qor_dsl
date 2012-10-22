@@ -32,17 +32,21 @@ module Qor
         end
       end
 
-      def load(path=nil, opts={})
-        reset! if opts[:force]
+      def load(path=nil, opts={}, &block)
+        reset! if opts[:force] || block_given?
 
-        @load_path = path || @load_path || default_config
-        @root ||= load_file(@load_path)
+        @root ||= if block_given? # Load from block
+                    node_root.config.instance_eval(&block)
+                    node_root
+                  else # Load from file
+                    @load_path = path || @load_path || default_config
+                    load_file(@load_path)
+                  end
       end
 
       def load_file(file)
         return unless File.exist?(file.to_s)
-        content = File.read(file)
-        node_root.config.instance_eval(content)
+        node_root.config.instance_eval(File.read(file))
         node_root
       end
 

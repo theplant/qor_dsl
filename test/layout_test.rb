@@ -2,11 +2,8 @@ require 'minitest/autorun'
 require File.join(File.dirname(__FILE__), 'configure')
 
 describe Layout do
-  before do
-    Layout::Configuration.load('test/layout.rb')
-  end
-
   it "layout config testing" do
+    Layout::Configuration.load('test/layout.rb', :force => true)
     # Find by type
     Layout::Configuration.find(:gadget).length.must_equal 2
     Layout::Configuration.find(:template).length.must_equal 2
@@ -46,6 +43,7 @@ describe Layout do
   end
 
   it "force load" do
+    Layout::Configuration.load('test/layout.rb', :force => true)
     root = Layout::Configuration.root
     root.find(:gadget).length.must_equal 2
     old_object_ids = root.find(:gadget).map(&:object_id).sort
@@ -59,5 +57,16 @@ describe Layout do
     new_root.find(:gadget).length.must_equal 2
     root.find(:gadget).map(&:object_id).sort.must_equal old_object_ids
     new_root.find(:gadget).map(&:object_id).sort.wont_be_same_as old_object_ids
+  end
+
+  it "load config from block" do
+    Layout::Configuration.load(nil, :force => true) do
+      template "new" do
+        "New Template"
+      end
+    end
+
+    Layout::Configuration.find(:template).count.must_equal 1
+    Layout::Configuration.first(:template).value.must_equal "New Template"
   end
 end
