@@ -1,6 +1,9 @@
 Qor Dsl - DSL made easy!
 =======
 
+[![Code Climate](https://codeclimate.com/badge.png)][codeclimate]
+[codeclimate]: https://codeclimate.com/github/qor/qor_dsl
+
 ## Description
 
     Why DSL? Easy to read, Easy to write, Easy to maintain!
