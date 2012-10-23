@@ -69,4 +69,8 @@ describe Layout do
     Layout::Configuration.find(:template).count.must_equal 1
     Layout::Configuration.first(:template).value.must_equal "New Template"
   end
+
+  it "should raise exception if configuration not found" do
+    lambda { Layout::Configuration.load("non_existing_file.rb", :force => true) }.must_raise Qor::Dsl::ConfigurationNotFound
+  end
 end

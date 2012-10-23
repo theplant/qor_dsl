@@ -1,3 +1,4 @@
+require 'qor_dsl/exception'
 require 'qor_dsl/class_method'
 require 'qor_dsl/config'
 require 'qor_dsl/node'

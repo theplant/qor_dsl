@@ -45,7 +45,7 @@ module Qor
       end
 
       def load_file(file)
-        raise("No configuration found!") unless File.exist?(file.to_s)
+        raise Qor::Dsl::ConfigurationNotFound unless File.exist?(file.to_s)
         node_root.config.instance_eval(File.read(file))
         node_root
       end
