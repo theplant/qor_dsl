@@ -78,7 +78,7 @@ Qor Dsl - DSL made easy!
     Gemfile.deep_find(:gem) do |n|
       # Find all gems used in development environment
       parent = n.parent
-      parent.root? || ((parent.config_name == :group) && parent.name == :development)
+      parent.root? || parent.is_node?(:group, :development)
     end
 
     # Qor DSL is designed to be as flexible as possible while helping you to create your DSLs.

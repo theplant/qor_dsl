@@ -20,11 +20,8 @@ module Qor
         root == self
       end
 
-      def is_node?(*arguments)
-        result = true
-        result = (config_name.to_s == arguments[0].to_s) if arguments.length >= 1
-        result = result && (name.to_s == arguments[1].to_s) if arguments.length == 2
-        return result
+      def is_node?(cname=nil, sname=nil)
+        (cname.nil? || (config_name.to_s == cname.to_s)) && (sname.nil? || (name.to_s == sname.to_s))
       end
 
       def root
@@ -80,9 +77,7 @@ module Qor
 
       def find(type=nil, name=nil, nodes=children, &block)
         selected_children = nodes.select do |child|
-          (type.nil? ? true : (child.config_name.to_s == type.to_s)) &&
-            (name.nil? ? true : (child.name.to_s == name.to_s)) &&
-            (block.nil? ? true : block.call(child))
+          child.is_node?(type, name) && (block.nil? ? true : block.call(child))
         end
 
         return selected_children[0] if !name.nil? && selected_children.length == 1

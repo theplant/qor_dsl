@@ -34,7 +34,7 @@ Gemfile.deep_find(:gem)
 Gemfile.deep_find(:gem) do |n|
   # Find all gems used in development environment
   parent = n.parent
-  parent.root? || ((parent.config_name == :group) && parent.name == :development)
+  parent.root? || parent.is_node?(:group, :development)
 end
 
 # Methods for node
