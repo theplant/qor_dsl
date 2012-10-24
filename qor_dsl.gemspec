@@ -11,5 +11,5 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "qor_dsl"
   gem.require_paths = ["lib"]
-  gem.version       = "0.1.4"
+  gem.version       = "0.1.5"
 end

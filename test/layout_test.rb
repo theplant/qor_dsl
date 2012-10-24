@@ -39,7 +39,18 @@ describe Layout do
     # Value for node
     Layout::Configuration.find(:gadget, :quick_buy).value.must_equal :quick_buy
 
+    Layout::Configuration.find(:gadget, :quick_buy).value.must_equal :quick_buy
     # More is coming... (multi, alias_node)
+  end
+
+  it "test node helper" do
+    Layout::Configuration.load('test/layout.rb', :force => true)
+    node = Layout::Configuration.find(:gadget, :quick_buy)
+    node.is_node?(:gadget).must_equal true
+    node.is_node?(:gadget, 'quick_buy').must_equal true
+    node.is_node?(:template).must_equal false
+    node.is_node?('gadget').must_equal true
+    node.is_node?.must_equal true
   end
 
   it "force load" do

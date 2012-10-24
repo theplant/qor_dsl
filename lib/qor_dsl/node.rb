@@ -20,6 +20,13 @@ module Qor
         root == self
       end
 
+      def is_node?(*arguments)
+        result = true
+        result = (config_name.to_s == arguments[0].to_s) if arguments.length >= 1
+        result = result && (name.to_s == arguments[1].to_s) if arguments.length == 2
+        return result
+      end
+
       def root
         parent ? parent.root : self
       end
