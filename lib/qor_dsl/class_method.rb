@@ -1,6 +1,7 @@
 module Qor
   module Dsl
     module ClassMethods
+      @@lock = Mutex.new
       def node_root
         @node_root ||= Qor::Dsl::Node.new
       end
@@ -33,15 +34,17 @@ module Qor
       end
 
       def load(path=nil, opts={}, &block)
-        reset! if opts[:force] || block_given?
+        @@lock.synchronize do
+          reset! if opts[:force] || block_given?
 
-        @root ||= if block_given? # Load from block
-                    node_root.config.instance_eval(&block)
-                    node_root
-                  else # Load from file
-                    @load_path = path || @load_path || default_config
-                    load_file(@load_path)
-                  end
+          @root ||= if block_given? # Load from block
+                      node_root.config.instance_eval(&block)
+                      node_root
+                    else # Load from file
+                      @load_path = path || @load_path || default_config
+                      load_file(@load_path)
+                    end
+        end
       end
 
       def load_file(file)
