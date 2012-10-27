@@ -2,7 +2,7 @@ require 'qor_dsl'
 
 module Layout
   module Configuration
-    include Qor::Dsl
+    include Qor::DSL
 
     node :template
 

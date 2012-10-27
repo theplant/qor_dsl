@@ -19,3 +19,11 @@ module Qor
     end
   end
 end
+
+module Qor
+  module DSL
+    def self.included(base)
+      base.send :include, Qor::Dsl
+    end
+  end
+end
