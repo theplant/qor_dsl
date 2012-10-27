@@ -18,6 +18,8 @@ module Layout
     end
 
     node :layout do
+      node :description, :default_value => "TODO"
+      node :description_block, :default_block => proc {|x| 'FIXME' }
       node :gadgets
     end
 

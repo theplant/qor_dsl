@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'configure')
 
 describe Layout do
   def many_times
-    threads = 100.times.map do |t|
+    threads = 20.times.map do |t|
       Thread.new do
         yield
       end
@@ -101,6 +101,15 @@ describe Layout do
   it "should raise exception if configuration not found" do
     many_times do
       lambda { Layout::Configuration.load("non_existing_file.rb", :force => true) }.must_raise Qor::Dsl::ConfigurationNotFound
+    end
+  end
+
+  it "default value should works" do
+    many_times do
+      Layout::Configuration.load('test/layout.rb', :force => true)
+      Layout::Configuration.first(:layout).first(:description).value.must_equal 'TODO'
+      Layout::Configuration.first(:layout).first(:description_block).value.must_equal 'FIXME'
+      refute_nil Layout::Configuration.first(:layout).first(:description_block).block
     end
   end
 end

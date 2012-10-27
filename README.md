@@ -30,7 +30,7 @@ Qor Dsl - DSL made easy!
       include Qor::Dsl
       default_configs [ENV['BUNDLE_GEMFILE'], 'Gemfile']
 
-      node :source
+      node :source, :default_value => 'http://rubygems.org'
       node :gem
 
       node :group do

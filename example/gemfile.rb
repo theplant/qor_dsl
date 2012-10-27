@@ -6,7 +6,7 @@ class Gemfile
   include Qor::Dsl
   default_configs [ENV['BUNDLE_GEMFILE'], File.join(File.dirname(__FILE__), 'Gemfile')]
 
-  node :source
+  node :source, :default_value => 'http://rubygems.org'
   node :gem
 
   node :group do
@@ -17,6 +17,9 @@ class Gemfile
     node :gem, :inherit => true
   end
 end
+
+# Default Value
+Gemfile.first(:source)
 
 # Methods for query
 Gemfile.first(:gem)
