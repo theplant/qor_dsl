@@ -1,7 +1,7 @@
 module Qor
   module Dsl
     class Node
-      attr_accessor :name, :config, :parent, :children, :data, :options, :block, :all_nodes, :dummy
+      attr_accessor :name, :config, :parent, :children, :data, :block, :all_nodes, :dummy
 
       def initialize(name=nil, options={})
         self.name   = name
@@ -47,20 +47,19 @@ module Qor
       end
 
       def options
-        return @options if @options.is_a?(Hash)
         return data[-1] if data.is_a?(Array) && data[-1].is_a?(Hash)
         return data if data.is_a?(Hash)
-        return config_options[:default_options] || {} if dummy?
-        {}
+        return name if name.is_a?(Hash)
+        return config_options[:default_options] || {}
       end
 
       def value
         ((config.__children.size > 0 || block.nil?) ? (options[:value] || name) : block.call) ||
-          (dummy? ? config_options[:default_value] : nil)
+          config_options[:default_value]
       end
 
       def block
-        @block || (dummy? ? config_options[:default_block] : nil)
+        @block || config_options[:default_block]
       end
 
       def add_config(config)
@@ -114,11 +113,11 @@ module Qor
         "{#{config_name}: #{name || 'nil'}}"
       end
 
-      def to_s
+      def inspect
         obj_options = {
           'name' => name,
-          'parent' => parent && parent.inspect_name,
           'config' => config_name,
+          'parent' => parent && parent.inspect_name,
           'children' => children.map(&:inspect_name),
           'data' => data,
           'block' => block

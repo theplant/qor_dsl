@@ -3,7 +3,7 @@ require File.join(File.dirname(__FILE__), 'configure')
 
 describe Layout do
   def many_times
-    threads = 20.times.map do |t|
+    threads = 100.times.map do |t|
       Thread.new do
         yield
       end
@@ -104,12 +104,41 @@ describe Layout do
     end
   end
 
-  it "default value should works" do
+  it "default value" do
     many_times do
-      Layout::Configuration.load('test/layout.rb', :force => true)
-      Layout::Configuration.first(:layout).first(:description).value.must_equal 'TODO'
-      Layout::Configuration.first(:layout).first(:description_block).value.must_equal 'FIXME'
-      refute_nil Layout::Configuration.first(:layout).first(:description_block).block
+      config = Layout::Configuration.load(nil, :force => true) do
+        layout "new" do
+          description
+        end
+      end
+      # default value
+      config.first(:layout).first(:description).value.must_equal 'TODO'
+
+      # default block
+      config.first(:layout).first(:description_block).value.must_equal 'FIXME'
+      refute_nil config.first(:layout).first(:description_block).block
+    end
+  end
+
+  it "find dummy nodes" do
+    many_times do
+      config1 = Layout::Configuration.load(nil, :force => true) do
+        layout "new"
+      end
+      config1.first(:layout).first(:description).value.must_equal 'TODO'
+      config1.first(:layout).first(:description).dummy?.must_equal true
+      config1.first(:layout).find(:description).count.must_equal 1
+    end
+  end
+
+  it "name as options" do
+    many_times do
+      config = Layout::Configuration.load(nil, :force => true) do
+        layout "new" do
+          description :hello => true
+        end
+      end
+      config.first(:layout).first(:description).options.must_equal({:hello => true})
     end
   end
 end

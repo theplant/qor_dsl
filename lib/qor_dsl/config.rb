@@ -40,7 +40,7 @@ module Qor
         self.instance_eval method_defination
       end
 
-      def to_s
+      def inspect
         obj_options = {
           'name' => __name,
           'parent' => __parent && __parent.__name,
