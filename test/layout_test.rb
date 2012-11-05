@@ -113,6 +113,7 @@ describe Layout do
       end
       # default value
       config.first(:layout).first(:description).value.must_equal 'TODO'
+      config.first(:layout).first(:description).dummy?.must_equal false
 
       # default block
       config.first(:layout).first(:description_block).value.must_equal 'FIXME'
@@ -122,12 +123,12 @@ describe Layout do
 
   it "find dummy nodes" do
     many_times do
-      config1 = Layout::Configuration.load(nil, :force => true) do
+      config = Layout::Configuration.load(nil, :force => true) do
         layout "new"
       end
-      config1.first(:layout).first(:description).value.must_equal 'TODO'
-      config1.first(:layout).first(:description).dummy?.must_equal true
-      config1.first(:layout).find(:description).count.must_equal 1
+      config.first(:layout).first(:description).value.must_equal 'TODO'
+      config.first(:layout).first(:description).dummy?.must_equal true
+      config.first(:layout).find(:description).count.must_equal 1
     end
   end
 

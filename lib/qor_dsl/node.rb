@@ -9,6 +9,23 @@ module Qor
         self.dummy = options[:dummy]
       end
 
+      def node(type, options={}, &blk)
+        config.node(type, options, &blk)
+      end
+
+      def add_config(config)
+        self.config = config
+        config.__node = self
+      end
+
+      def add_child(child)
+        child.parent = self
+        children << child
+        root.all_nodes ||= []
+        root.all_nodes << child
+      end
+
+
       ## Node Config
       def config_name
         config.__name
@@ -18,57 +35,10 @@ module Qor
         config.__options || {} rescue {}
       end
 
-      def child_config(type)
-        config.__children[type] || nil
-      end
 
-      def child_config_options(type)
-        child_config(type).__options || {} rescue {}
-      end
-
-      def dummy?
-        dummy
-      end
-
-      def is_node?(cname=nil, sname=nil)
-        (cname.nil? || (config_name.to_s == cname.to_s)) && (sname.nil? || (name.to_s == sname.to_s))
-      end
-
-      def root?
-        root == self
-      end
-
-      def root
-        parent ? parent.root : self
-      end
-
+      ## Node
       def parents
         parent ? [parent, parent.parents].flatten : []
-      end
-
-      def options
-        return data[-1] if data.is_a?(Array) && data[-1].is_a?(Hash)
-        return data if data.is_a?(Hash)
-        return name if name.is_a?(Hash)
-        return config_options[:default_options] || {}
-      end
-
-      def value
-        ((config.__children.size > 0 || block.nil?) ? (options[:value] || name) : block.call) ||
-          config_options[:default_value]
-      end
-
-      def block
-        @block || config_options[:default_block]
-      end
-
-      def add_config(config)
-        self.config = config
-        config.__node = self
-      end
-
-      def node(type, options={}, &blk)
-        config.node(type, options, &blk)
       end
 
       def children
@@ -77,11 +47,56 @@ module Qor
         @children
       end
 
-      def add_child(child)
-        child.parent = self
-        children << child
-        root.all_nodes ||= []
-        root.all_nodes << child
+      def root
+        parent ? parent.root : self
+      end
+
+      def root?
+        root == self
+      end
+
+      def dummy?
+        !!dummy
+      end
+
+      def is_node?(node_type=nil, name_str=nil)
+        (node_type.nil? || (config_name.to_s == node_type.to_s)) && (name_str.nil? || (name.to_s == name_str.to_s))
+      end
+
+
+      ## Node Data
+      def default_value
+        config_options[:default_value]
+      end
+
+      def value
+        ((config.__children.size > 0 || block.nil?) ? (options[:value] || name) : block.call) || default_value
+      end
+
+      def default_options
+        config_options[:default_options]
+      end
+
+      def options
+        return data[-1] if data.is_a?(Array) && data[-1].is_a?(Hash)
+        return data if data.is_a?(Hash)
+        return name if name.is_a?(Hash)
+        return default_options || {}
+      end
+
+      def default_block
+        config_options[:default_block]
+      end
+
+      def block
+        @block || default_block
+      end
+
+
+      ## Query
+      def first(type=nil, name=nil, &block)
+        selected_children = find(type, name, &block)
+        selected_children.is_a?(Array) ? selected_children[0] : selected_children
       end
 
       def deep_find(type=nil, name=nil, &block)
@@ -103,15 +118,6 @@ module Qor
         results
       end
 
-      def first(type=nil, name=nil, &block)
-        selected_children = find(type, name, &block)
-        selected_children.is_a?(Array) ? selected_children[0] : selected_children
-      end
-
-      ## Inspect
-      def inspect_name
-        "{#{config_name}: #{name || 'nil'}}"
-      end
 
       def inspect
         obj_options = {
@@ -125,6 +131,7 @@ module Qor
         Qor::Dsl.inspect_object(self, obj_options)
       end
 
+
       private
       def process_find_results(results, type)
         if results.length == 0 &&
@@ -132,6 +139,18 @@ module Qor
           results = [Node.new(nil, :config => child_config(type), :dummy => true)]
         end
         results
+      end
+
+      def child_config(type)
+        config.__children[type] || nil
+      end
+
+      def child_config_options(type)
+        child_config(type).__options || {} rescue {}
+      end
+
+      def inspect_name
+        "{#{config_name}: #{name || 'nil'}}"
       end
     end
   end
