@@ -111,11 +111,7 @@ module Qor
         end
 
         results = parent.find(type, name, &block) if results.length == 0 && child_config_options(type)[:inherit]
-        results = process_find_results(results, type)
-
-        return results[0] if !name.nil? && results.is_a?(Array) && results.length == 1
-
-        results
+        process_find_results(results, type)
       end
 
 

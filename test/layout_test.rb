@@ -19,11 +19,11 @@ describe Layout do
       Layout::Configuration.find(:template).length.must_equal 2
       Layout::Configuration.deep_find(:template).length.must_equal 3
       # :settings, :meta, :meta, :meta, :meta, :context, :template
-      Layout::Configuration.find(:gadget, :quick_buy).deep_find().length.must_equal 7
+      Layout::Configuration.first(:gadget, :quick_buy).deep_find().length.must_equal 7
 
       # Find by name
-      Layout::Configuration.find(:gadget, 'quick_buy').name.must_equal :quick_buy
-      Layout::Configuration.deep_find(:desc, "From Google").value.must_equal "From Google"
+      Layout::Configuration.first(:gadget, 'quick_buy').name.must_equal :quick_buy
+      Layout::Configuration.deep_find(:desc, "From Google")[0].value.must_equal "From Google"
 
       # Find by block
       Layout::Configuration.first(:template) do |n|
@@ -31,11 +31,11 @@ describe Layout do
       end.value.must_equal 'Hello World2'
 
       Layout::Configuration.deep_find(:desc) do |n|
-        n.parents.include?(Layout::Configuration.find(:action, :google))
+        n.parents.include?(Layout::Configuration.first(:action, :google))
       end[0].value.must_equal 'From Google'
 
       # Inherit
-      Layout::Configuration.find(:gadget, :product_link).find(:template)[0].value.must_equal "Hello World"
+      Layout::Configuration.first(:gadget, :product_link).find(:template)[0].value.must_equal "Hello World"
 
       # Store any data
       Layout::Configuration.first(:template).data.must_equal ["v1", {:since => "09:00", :to => "12:00"}]
@@ -44,12 +44,10 @@ describe Layout do
       Layout::Configuration.find(:template)[1].options.must_equal({:since => "13:00", :to => "18:00"})
 
       # Parents
-      Layout::Configuration.find(:gadget, :quick_buy).first(:template).parents.count.must_equal 2
+      Layout::Configuration.first(:gadget, :quick_buy).first(:template).parents.count.must_equal 2
 
       # Value for node
-      Layout::Configuration.find(:gadget, :quick_buy).value.must_equal :quick_buy
-
-      Layout::Configuration.find(:gadget, :quick_buy).value.must_equal :quick_buy
+      Layout::Configuration.first(:gadget, :quick_buy).value.must_equal :quick_buy
     end
     # More is coming... (multi, alias_node)
   end
@@ -57,7 +55,7 @@ describe Layout do
   it "test node helper" do
     many_times do
       Layout::Configuration.load('test/layout.rb', :force => true)
-      node = Layout::Configuration.find(:gadget, :quick_buy)
+      node = Layout::Configuration.first(:gadget, :quick_buy)
       node.is_node?(:gadget).must_equal true
       node.is_node?(:gadget, 'quick_buy').must_equal true
       node.is_node?(:template).must_equal false

@@ -69,7 +69,7 @@ Qor Dsl - DSL made easy!
     Gemfile.find(:gem)
 
     # Find by type and name also chain query
-    Gemfile.find(:group, 'development').find(:gem)
+    Gemfile.first(:group, 'development').find(:gem)
 
     # Get all gems
     Gemfile.deep_find(:gem)

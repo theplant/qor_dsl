@@ -11,7 +11,11 @@ module Qor
 
     def self.inspect_object(obj, options)
       options = options.inject({}) do |summary, value|
-        summary[value[0]] = value[1] if value[1] && value[1].to_s.length > 0
+        unless [:nil?, :empty?, :blank?].any? { |method|
+          value[1].respond_to?(method) && value[1].send(method)
+        }
+          summary[value[0]] = value[1]
+        end
         summary
       end
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require 'qor_dsl'
+require File.expand_path(File.join(File.dirname(__FILE__), '../lib/qor_dsl'))
 
 class Gemfile
   include Qor::Dsl
@@ -31,7 +31,7 @@ Gemfile.find(:gem) do |n|
   !!n.options[:git].nil?
 end
 
-Gemfile.find(:group, 'development').find(:gem)
+Gemfile.first(:group, 'development').find(:gem)
 
 Gemfile.deep_find(:gem)
 Gemfile.deep_find(:gem) do |n|
