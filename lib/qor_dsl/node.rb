@@ -127,6 +127,10 @@ module Qor
         Qor::Dsl.inspect_object(self, obj_options)
       end
 
+      protected
+      def inspect_name
+        "{#{config_name}: #{name || 'nil'}}"
+      end
 
       private
       def process_find_results(results, type)
@@ -143,10 +147,6 @@ module Qor
 
       def child_config_options(type)
         child_config(type).__options || {} rescue {}
-      end
-
-      def inspect_name
-        "{#{config_name}: #{name || 'nil'}}"
       end
     end
   end
