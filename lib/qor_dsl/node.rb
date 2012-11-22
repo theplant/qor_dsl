@@ -79,7 +79,6 @@ module Qor
 
       def options
         return data[-1] if data.is_a?(Array) && data[-1].is_a?(Hash)
-        return data if data.is_a?(Hash)
         return name if name.is_a?(Hash)
         return default_options || {}
       end

@@ -30,7 +30,7 @@ module Qor
             config = __children['#{type}'.to_sym]
             node = Qor::Dsl::Node.new(name)
             node.add_config(config)
-            node.data = *data
+            node.data = data
             node.block = blk
             __node.add_child(node)
             node.config.instance_eval(&blk) if block_given? && (config.__children.size > 0)
