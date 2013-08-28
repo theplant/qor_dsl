@@ -1,5 +1,5 @@
 require 'minitest/autorun'
-require File.join(File.dirname(__FILE__), 'configure')
+require File.join(File.expand_path(File.dirname(__FILE__)), 'configure')
 
 describe Layout do
   def many_times
